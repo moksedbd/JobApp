@@ -1,0 +1,906 @@
+<?php include ("conn.txt");?>
+<!DOCTYPE html>
+<html lang="en-US">
+ <head>  
+<meta charset="utf-8"> 
+<title>moksedbd</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<meta name="description" content="Website Developments Customizations of CMS">
+<meta name="author" content="moksedbd web design and developmensts">
+<link rel="shortcut icon" href="http://workflowsys.dx.am/favicon.ico">
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script> 
+<link href="http://demo.workflowsys.dx.am/css/bootstrap.min.css" rel="stylesheet" media="screen"> 
+<link rel="canonical" href="http://workflowsys.dx.am" />
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+<script src="http://demo.workflowsys.dx.am/js/bootstrap.min.js"></script>
+<script src="http://demo.workflowsys.dx.am/js/respond.js"></script>
+<script type="text/javascript" src="axweb/ajaxtcr.js"></script>
+<script type="text/javascript">
+function sendRequest(name){
+$(this).addClass("active");
+var payload = "name=" + name;
+var url = "controler.php";
+var options = { method: "GET",showProgress: true,
+onProgress: showTimer, onSent: showSend,
+payload: payload, 
+onSuccess: showResponse};  
+AjaxTCR.comm.sendRequest(url, options);
+
+return false;
+}
+function showResponse(response){
+$id("tabs-1").style.fontSize = "11px";
+$id("tabs-1").innerHTML = response.requestID + ": " +response. responseText;
+var stm = $id("body");
+stm.style.opacity = 1.0;
+$("#cldate,#date3").datepicker();
+$("input").tooltip();
+}
+function showTimer(request){
+var stm = $id("body");
+stm.style.opacity = 0.5;
+showtxt = $id("tabs-1");
+showtxt.style.opacity= 1.0;
+showtxt.style.textAlign= "center";
+showtxt.style.fontSize = "22px";
+showtxt.innerHTML = "Loading..."+ request.timespent;
+}
+function showSend(request){
+$id("tabs-1").innerHTML = "a network error has been occured, please try again";
+var stm = $id("body");
+stm.style.opacity = 1.0;
+}
+function myTimer(){
+var d=new Date();
+var t=d.toLocaleTimeString();
+document.getElementById("watch").innerHTML=t;
+}
+function myani(){
+$( "#boun" ).toggle( "bounce", { times: 3 }, "slow" );
+}
+ 
+function clientdata(){
+txt = "Browser CodeName: " + navigator.appCodeName + "<br>";
+txt+= "Browser Name: " + navigator.appName + "<br>";
+txt+= "Browser Version: " + navigator.appVersion + "<br>";
+txt+= "Cookies Enabled: " + navigator.cookieEnabled + "<br>";
+txt+= "Platform: " + navigator.platform + "<br>";
+txt+= "User-agent header: " + navigator.userAgent+ "<br>";
+txt+= "User-agent language: " + navigator.systemLanguage+ "<br>";
+txt+= "Refferer: " + document.referrer;
+$("#browserob").html( txt );
+}
+function jobapplink()  {
+window.location.assign("http://www.workflowsys.dx.am/viewcircular.php");
+ $("body").hide("slow");
+  }
+function cursol()  {
+var csel = document.getElementById("myCarousel");
+if(!csel){
+ $("#tabs-1").load("curoser.html"); 
+$(".carousel").carousel({
+interval: 2500
+}); 
+  }  }
+function joborder() {
+$(".modal").modal("show");
+}
+function scrn(){
+var w=window.innerWidth
+|| document.documentElement.clientWidth
+|| document.body.clientWidth;
+var h=window.innerHeight
+|| document.documentElement.clientHeight
+|| document.body.clientHeight;
+var bw = screen.availWidth;
+alert(w +" " + h +" "+ bw);
+}
+function hndlscrn(){
+var viewportWidth = $(window).width(),
+viewportHeight = $(window).height(),
+$foo = $(".wraper").width(),
+elWidth = $foo.width(),
+elHeight = $foo.height(),
+elOffset = $foo.offset();
+$(window).scrollTop(elOffset.top + (elHeight/2) - (viewportHeight/2))
+.scrollLeft(elOffset.left + (elWidth/2) - (viewportWidth/2));
+
+/*var cw=window.innerWidth
+|| document.documentElement.clientWidth
+|| document.body.clientWidth;
+if(cw < 800){
+$("body").css({marginLeft: "0", marginRight: "0"});
+$(".header-bottom").css("overflow", "scroll");
+$("button").css({margin:"0",padding:"2px 2px",lineHeight:"1", fontSize:"1em"});
+$(".header-top").css({lineHeight:"1",height:"auto"});
+$(".header-top > div").css({display:"block",borderBottom:"1px solid #fff"});
+$("#pnum").css({fontSize:"1.5em",color:"green"});
+
+}else if(cw == 800){
+$("body").css({marginLeft: "7%", marginRight: "7%"});
+$(".header-bottom").css("overflow", "scroll");
+}else if(cw == 1024){
+$("body").css({marginLeft: "12%", marginRight: "12%", zoom: "1"});
+}else if(cw == 1152){
+$("body").css({marginLeft: "13%", marginRight: "13%", zoom: "1"});
+}else if(cw == 1286){
+$("body").css({marginLeft: "15%", marginRight: "15%", zoom: "1"});
+}else if(cw > 1500){
+$("body").css({marginLeft: "20%", marginRight: "20%"});
+}
+*/
+}
+function smitjoborder(){
+var wsite = $("#url").val();
+var cemail = $("#cm").val();
+var jdesc = $("#jobdes").val();
+var timf = $("#datepicker").val();
+var timt = $("#dateto").val();
+var budg = $("#budget").val();
+$(".form-horizontal").html("<b>Loading:</b><img src='loader.gif' />");
+$.ajax({
+type: "POST",
+url: "joborder.php",
+data: {
+website: wsite,
+cml: cemail,
+jobd: jdesc,
+ftime: timf,
+ttime: timt,
+budget: budg },
+dataType: "html",
+success: function(html) {
+$(".form-horizontal").html("Response: " + html);
+$(".modal-footer > a").hide();
+}
+});
+}
+function formload(){
+$(".modal-body").html("<b>Loading:</b><img src='loader.gif' />");
+$("#datepicker,#dateto,#cldate").datepicker();
+$("input,textarea").tooltip();
+$(".modal-footer > a").show();
+$(".modal-body").load("joborderform.php");
+}
+
+function getCookie(c_name){
+var c_value = document.cookie;
+var c_start = c_value.indexOf(" " + c_name + "=");
+if (c_start == -1){
+c_start = c_value.indexOf(c_name + "=");
+}
+if (c_start == -1){
+c_value = null;
+}else{
+c_start = c_value.indexOf("=", c_start) + 1;
+var c_end = c_value.indexOf(";", c_start);
+if (c_end == -1){
+c_end = c_value.length;
+}
+c_value = unescape(c_value.substring(c_start,c_end));
+}
+return c_value;
+}
+
+function setCookie(c_name,value,exdays){
+var exdate=new Date();
+exdate.setDate(exdate.getDate() + exdays);
+var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+document.cookie=c_name + "=" + c_value;
+}
+
+function checkCookie(){
+var coemail=getCookie("useremail");
+var copass =getCookie("userpass");
+var covdate = getCookie("visitdate");
+if (coemail && copass && covdate){
+  alert("Wellcome Again!<br /> " + coemail+
+  "<br />LastVisited: "+covdate);
+  }else {
+  coemail = document.getElementById("email").value;
+  copass = document.getElementById("pwd").value;
+  covdate = new Date();  
+  setCookie("useremail",coemail,2);
+  setCookie("userpass",copass,2);
+  setCookie("visitdate",covdate,2);   
+  }
+}
+function printpage() {
+  window.print()
+  }
+function odasked() {
+$.ajax({
+type: "GET",
+url:"https://www.odesk.com/api/profiles/v1/metadata/tests.xml?api_key=caf1ba1de76aebd3d9b2456fc7855869&api_secret=d667910ba3b57ca4&callback=?",
+dataType: "xml",
+success:function(xml){ 
+$("#tabs-1").html("Success: "+xml);
+},
+error:function(){
+alert("Error");
+},
+});
+}
+
+function savevitorinfo(){
+var uscrinW = window.innerWidth
+|| document.documentElement.clientWidth
+|| document.body.clientWidth;
+var uscrinH = window.innerHeight
+|| document.documentElement.clientHeight
+|| document.body.clientHeight;
+var browName = navigator.appCodeName;
+var browType = navigator.appName;
+var browPlatf = navigator.platform;
+var userIP = "<?php echo $_SERVER['REMOTE_ADDR'];?>";
+var uagent = navigator.userAgent;
+var visitdate = new Date();
+if(uscrinW && uscrinH && browName && browType && browPlatf && userIP && uagent && visitdate){
+$.ajax({
+type: "POST",
+url: "saveuserinfo.php",
+data: {
+uip: userIP,
+bplat: browPlatf,
+cW: uscrinW,
+cH: uscrinH,
+bn: browName,
+bt: browType,
+ug: uagent,
+vdate: visitdate },
+dataType: "html",
+success:function(html){ 
+$("#pnum").before("Success: "+html);
+},
+error:function(){
+alert("Error");
+}
+});
+}else{
+alert("There is a problem with data");
+}
+}
+function showss(){
+$("#tabs-1").text("Comming Soon...");
+}
+
+function contactsubmit(){
+var sender = $("#sendto").val();
+var cn = $("#clnName").val();
+var ce = $("#clnEmail").val();
+var cp = $("#cphone").val();
+var cm = $("#clnmessage").val();
+if(cn && ce && cm){
+var stm = $id("body");
+stm.style.opacity = 0.5;
+$("#tabs-1").html("<b>Loading:</b><img src='loader.gif' />");
+$.ajax({
+type: "POST",
+url: "contact.php",
+data: {
+sendto: sender,
+Email: ce,
+Name: cn,
+phone: cp,
+Message: cm
+},
+dataType: "html",
+success:function(html){ 
+$("#tabs-1").html("Response: "+html);
+var stm = $id("body");
+stm.style.opacity = 1.0;
+},
+error:function(){
+alert("Error");
+}
+});
+}else{
+alert("There is a problem with input");
+}
+}
+function countryname(){
+var bip = "<?php echo $_SERVER['REMOTE_ADDR'];?>";
+$("#tabs-1").text("loading..");
+$.ajax({
+type:"GET",
+url: "http://api.ipaddresslabs.com/iplocation/v1.7/locateip",
+data:{ key: "SAKAD355VXY5B38H74FZ", ip: bip, format: "XML" },
+dataType: "json",
+success: function(json) {
+$("#tabs-1").html(json);
+
+}
+});
+}
+function jospost(){
+var jobid = $("#ji").val();
+var hedertxt = $("#hdt").val();
+var comview = $("#orgv").val();
+var postname = $("#pgn").val();
+var jobsumary = $("#jsum").val();
+var requirment = $("#rqm").val();
+var salary = $("#slr").val();
+var massage = $("#Mess").val();
+var closingdate = $("#cldate").val();
+var note = $("#nte").val();
+var patt1 = /[a-z]+/gi;
+var result = jobid.match(patt1);
+if(result){alert("Job id must be only number");
+form.submit() = false;
+}else{
+$("#tabs-1").html("<b>Loading:</b><img src='loader.gif' />");
+$.ajax({
+type:"POST",
+url: "cir2.php",
+data:{ 
+ji: jobid, 
+hdt: hedertxt, 
+orgv: comview,
+pgn:postname, 
+jsum:jobsumary, 
+rqm: requirment,
+slr:salary ,
+Mess:massage,
+cldate:closingdate ,
+nte: note
+},
+dataType: "html",
+success:function(html){ 
+$("#tabs-1").html("Response: "+html);
+}
+});
+}
+}
+
+function showRSS(str){
+if (str.length==0){  
+return;
+}
+if (window.XMLHttpRequest)  {// code for IE7+, Firefox, Chrome, Opera, Safari
+xmlhttp=new XMLHttpRequest();
+}else  {// code for IE6, IE5
+xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+}
+xmlhttp.onreadystatechange=function()  {
+if (xmlhttp.readyState==0){
+document.getElementById("tabs-1").innerHTML="Request initialized";
+}
+if (xmlhttp.readyState==1){
+document.getElementById("tabs-1").innerHTML="loading";
+}
+if (xmlhttp.readyState==2){
+document.getElementById("tabs-1").innerHTML="response headers received";
+}
+if (xmlhttp.readyState==3){
+document.getElementById("tabs-1").innerHTML="some response body received";
+}
+if (xmlhttp.readyState==4){
+document.getElementById("tabs-1").innerHTML=xmlhttp.responseText;
+}
+}
+xmlhttp.open("GET","getrss.php?q="+str,true);
+xmlhttp.send();
+}
+
+function visitorpd(){ 
+ $.ajax({
+type: "GET",
+url: "controler.php",
+data: {name:"perday" },
+dataType: "html",
+success: function(html) {
+$("#relt").html("Response: " + html);
+}
+});
+}
+
+function hidesmi(){
+$("#smi").hide("slow");
+}
+function lastmdate(){
+ $("#footer").append("<b style='margin:0px 0px 0px 80px;'>This document was last modified on: </b>"+document.lastModified);
+ $("tr:even").css("background-color", "#F8F8F8");
+}  
+
+function testxht(){
+alert(/*
+client . open(method, url, async, username, password)
+client . setRequestHeader(name, value);
+client . timeout ;
+client . withCredentials ;
+client . upload;
+client . send([data = null]);
+client . abort();
+client.onreadystatechange = function() {
+  if(this.readyState == 2) { print(client.getResponseHeader('Content-Type'));}
+}
+client.onprogress = function(pe) {
+    if(pe.lengthComputable) {
+      progressBar.max = pe.total
+      progressBar.value = pe.loaded
+    }
+  }
+  client.onloadend = function(pe) {
+    progressBar.value = pe.loaded
+  }
+print(client.getResponseHeader("Content-Type"));
+client . overrideMimeType(mime);
+client . responseType [ = value ];
+client . response;
+client . responseText;
+client . responseXML;*/);
+
+
+}
+window.onload=function(){
+$(".carousel").carousel({interval: 2000});  
+$("#datepicker,#dateto,#cldate,#calander").datepicker();
+$("input,textarea,button").tooltip();
+$("#collapse8").collapse();
+$(".header-middle").append("<mark>I would like to help the website owners, organizations and individuals to build their open and logical ideas</mark>");
+var myVar = setInterval(function(){myTimer()},1000);
+var myanim = setInterval(function(){myani()},9000);
+var mycuro = setInterval(function(){cursol()},90000);
+
+clientdata();
+savevitorinfo();
+checkCookie();
+visitorpd();
+lastmdate();
+}
+</script>
+<style type="text/css">
+@font-face {
+    font-family: 'webfontregular';
+    src: url('testing/futura-webfont.eot');
+    src: url('testing/futura-webfont.eot?#iefix') format('embedded-opentype'),
+         url('testing/futura-webfont.woff') format('woff'),
+         url('testing/futura-webfont.ttf') format('truetype'),
+         url('testing/futura-webfont.svg#webfontregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+body{
+font-family: 'webfontregular';
+background-color:#000 linear-gradient(45deg, white, black);
+}
+#header{margin:0 0 1px 0;}
+#utilities{background:#EB0000;cursor:pointer;height:auto;margin:2px 0 10px 0;padding-top:12px;padding-bottom:8px;}
+.span12 #ustatic{background:#eee;padding:3px 3px;}
+#rssfeed{padding-top:25px;padding-left:10px;background:#ddd;}
+#utilities .span12 .span3{background:black;color:#fff;padding:17px;}
+#smi{position:fixed;float:right;margin:40% 0px 0px 85%;z-index:888;}
+dl dt dd{margin:5px 5px;padding:5px 5px;}
+table tr td{font-size:11px;}
+table, tr, th{text-align:left;}
+table tbody tr td a{font-size:10px;padding:0;margin:0;}
+.span12 .navbar .navbar-inner ul li{margin-top:8px;}
+.span12 .navbar .navbar-inner ul li a{background:blue;color:#fff;}
+
+@media (min-width: 150px) and (max-width: 430px) {
+*{margin:0;padding:0;}
+h1{margin:2px 2px;padding:0;}
+.span12 .navbar{background:#ccc;}
+.span12 .navbar .navbar-inner .nav{margin-top:2px;}
+.span12 #ustatic{display:none;}
+#header h1, a{margin:1px 1px;padding: 1px 1px;}
+#rssfeed{display:none;}
+#calander{display:none;}
+#ustic{display:none;}
+#gs{width:100%;}
+#smi{display:none;}
+#gs *{padding:o;margin:0;}
+#container, #mainContainer{width:100%;padding:0;margin:0;}
+.span12 .navbar h1, a{margin:0;padding:0;}
+.span12 .navbar .navbar-inner .nav .divider-vertical{display:none;}
+.span12 .navbar .navbar-inner{background:#000 linear-gradient(30deg, red, transparent, blue);color:#fff;}
+
+.span12 .navbar .navbar-inner .nav li{margin:1px 1px;}
+.span12 .navbar .navbar-inner .nav li a{padding:3px 3px;font-size:9px;text-transform:uppercase;}
+#utilities{font-size:10px;}
+}
+
+@media (min-width: 431px) and (max-width: 690px) {
+.span12 .navbar{background:#ccc;}
+.span12 .navbar .navbar-inner .nav{margin-top:8px;}
+#rssfeed{display:none;}
+#calander{display:none;}
+.span12 #ustatic{display:none;}
+#ustic{display:none;}
+#smitable{display:none;}
+#gs{width:100%;}
+#gs *{padding:o;margin:0;}
+#container, #mainContainer{width:100%;padding:0;margin:0;}
+
+.span12 .navbar .navbar-inner ul .divider-vertical{background:black;margin:8px 0 0 0;padding:0;}
+.span12 .navbar .navbar-inner{background:#000;color:#fff;}
+#ustatistic{
+font-size:16px;*zoom: 1;
+}
+}
+
+@media (min-width: 691px) and (max-width: 999px) {
+.span12 .navbar{background:#ddd;}
+.span12 .navbar .navbar-inner .nav{margin-top:8px;}
+//#rssfeed{display:none;}
+//#calander{display:none;}
+.span12 .navbar .navbar-inner ul .divider-vertical{background:blue linear-gradient(yellow, blue);margin:8px 0 0 0;padding:0;}
+.span12 .navbar .navbar-inner{background:linear-gradient(yellow, blue);color:#fff;}
+#ustatistic{font-size:16px;*zoom: 1;}
+#smitable{display:none;}
+}
+
+#animated_div{
+animation:animated_div 5s 1;
+animation-timing-function:linear;
+-webkit-animation-timing-function:linear;
+-moz-animation-timing-function:linear;
+-moz-animation:animated_div 5s 1;
+-webkit-animation:animated_div 5s 1;
+-o-animation:animated_div 5s 1;
+border-radius:5px;
+-webkit-border-radius:5px;
+
+}
+
+@keyframes animated_div{
+0%		{transform: rotate(0deg);left:0px;}
+25%		{transform: rotate(20deg);left:0px;}
+50%		{transform: rotate(0deg);left:500px;}
+55%		{transform: rotate(0deg);left:500px;}
+70%		{transform: rotate(0deg);left:500px;background:#1ec7e6;}
+100%	{transform: rotate(-360deg);left:0px;}
+}
+
+</style> 
+</head>
+<body id="body">
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=246867995423081";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<?php
+$rfr = $_SERVER["HTTP_REFERER"];
+if($rfr){
+echo "you are refered to".$rfr;
+}
+?>
+<div class="container-fluid"style="background: #A1A1A1;padding:5px 5px;">
+<div class="row-fluid">
+<div class="row-fluid">
+<div class="span12">
+<div class="navbar"id="header">
+<h1 id="animated_div"><a class="brand" href="#">Workflow</a></h1>
+<div style="float:right;"id="smitable"><!-- social media link-->
+<table cellpadding="8"><tr>
+<td><div class="fb-share-button" data-href="http://workflowsys.dx.am" data-width="90" data-type="button_count"></div></td>
+<td><a href="https://twitter.com/twitter" class="twitter-follow-button" data-show-count="true" data-show-screen-name="mksdbd4" data-lang="en"data-width="90px">Twitter</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</td>
+<td><script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
+<script type="IN/Share" data-url="workflowsys.dx.am" data-counter="right"></script></td>
+<td><g:plusone></g:plusone></td>
+</tr></table>
+</div>
+<div id="smi">
+<dl>
+<dt><h5>Find Me On Social Media</h5><a href="#"onclick="hidesmi()">hide this</a></dt>
+<dd><div class="fb-share-button" data-href="http://workflowsys.dx.am" data-width="90" data-type="button_count"></div></dd>
+<dd><a href="https://twitter.com/twitter" class="twitter-follow-button" data-show-count="true" data-show-screen-name="mksdbd4" data-lang="en"data-width="90px">Twitter</a></dd>
+<dd><script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
+<script type="IN/Share" data-url="workflowsys.dx.am" data-counter="right"></script></dd>
+<dd><g:plusone></g:plusone></dd>
+</dl>
+</div>
+
+    <div class="navbar-inner"id="side-bar"style="margin:0;padding:0;width:100%;">
+    
+    <ul class="nav">
+    <li class="active"><a href="#"><i class="icon-home"style="transform:scale(1.5,1.5);margin:0px 7px 0px 0px;"></i> Home</a></li>
+	<li class="divider-vertical"></li>
+    <li class="active"><a href="#"onclick="return sendRequest('about')">About</a></li>
+	<li class="divider-vertical"></li>
+    <li class="active"><a href="#"onclick="return sendRequest('MyExpertise')">Expertise</a></li>
+	<li class="divider-vertical"></li>
+	<li class="active"><a href="#"onclick="sendRequest('jobapp');">Job Post </a></li>
+	<li class="divider-vertical"></li>
+    <li class="active"><a href="#"onclick="jobapplink()">Job Application</a></li>
+	<li class="divider-vertical"></li>
+	<li class="active"><a href="#"onclick="return sendRequest('contact')"><i class="icon-envelope"style="transform:scale(1.5,1.5);margin:0px 7px 0px 0px;"></i>Contact</a></li>
+	<li class="divider-vertical"></li>
+    <li class="active"><a href="#"onclick="joborder();">JobOrder</a></li>
+	<li class="divider-vertical"></li>
+	<li class="active"><a href="#"onclick="return sendRequest('sitefile')"><i class="icon-file"style="transform:scale(1.5,1.5);margin:0px 7px 0px 0px;"></i> Site Files</a></li>
+	<li class="divider-vertical"></li>
+    <li class="active"><a href="testing/">Font info</a></li>
+	 <li class="active"><a href="https://www.odesk.com/users/~01e14f5ebbf4c2423c">Odesk Profile</a></li>
+	 <li class="active"><a href="#" onclick="testxht()">testxhr</a></li>
+    </ul>
+    </div>
+    </div>
+	
+	<div class="row-fluid" id="utilities">
+<div class="span12">
+<div class="span3">       
+<?php $currentTime = date("M d y h:i:s A");
+echo $currentTime;?>
+</div>
+<div class="span3"><?php echo $_SERVER['REMOTE_ADDR'];?></div>
+<div class="span3"><a onclick="return sendRequest('Login')"title="New Back-End System pass:123, email:mksdbd4@gmail.com">log In</a>
+</div> 
+<div class="span3"><a onclick="return sendRequest('Signup')" id="singup"title="Create Account">Sign UP</a></div> 
+</div></div>	
+</div>
+</div>
+<div class="row-fluid"id="container">
+<div class="span12">
+<div class="span3" id="ustatic">
+<div id="calander"style="position:relative;overflow:auto;"></div><br />
+<table class="table-condensed"id="ustic"><thead>
+<caption class="ui-widget-header"><i class="icon-user"></i>Visitor Statistics</caption>
+<tr><th>Year</th><th>Month</th><th>visit</th>
+</tr>
+</thead>
+<?php
+$vpd = "SELECT year,month,SUM(day) AS days FROM visitpd GROUP BY year,month";
+$result5 = mysql_query($vpd); 
+$num3= mysql_numrows($result5);
+
+$k=0;
+while ($k < $num3) {
+$yar = mysql_result($result5,$k,'year');
+$mash = mysql_result($result5,$k,'month');
+$days = mysql_result($result5,$k,'days');
+?>
+<tbody>
+<tr><td><?php echo $yar;?></td>
+<td><?php echo $mash;?></td>
+<td><?php echo $days;?></td>
+</tbody>
+<?php
+$k++;
+}
+?>
+<tfooter>
+<tr>
+<?php 
+$vidate = date("Y/m/d");
+$tday = "SELECT  COUNT(day) as amnt FROM visitpd WHERE vdate = '$vidate'";
+$result6 = mysql_query($tday);
+$row6 = mysql_fetch_array($result6);
+
+$totalvisit = "SELECT  COUNT(*) as totalvisit FROM visitpd";
+$result7 = mysql_query($totalvisit);
+$row7 = mysql_fetch_array($result7);
+?>
+<td colspan="2"class="label label-success">Totall Visit: </td><td><span class="badge badge-info"><?php echo $row7[totalvisit] ?></span></td></tr>
+<tr><td colspan="2"class="label label-success">Todays Visit: </td><td><span class="badge badge-info"><?php echo $row6[amnt] ?></span></td></tr>
+</tfooter>
+</table>
+<div id="relt"></div><br />
+
+<div class="accordion" id="accordion2">
+<div class="accordion-group">
+<div class="accordion-heading">
+<h3 class="ui-widget-header">My Services </h3>
+<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse3">Building and Customize database website and CMS</a>
+<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse3">
+<i class="icon-th-list"></i> API Integration</a>
+</div>
+<div id="collapse3" class="accordion-body collapse">
+<div class="accordion-inner">
+<ul>
+<li><a href="#tabs-1" onclick="return sendRequest('PaymentGetway')"title="Payment Method Integration">Payment Methods</a></li>
+<li><a href="#tabs-1" onclick="return sendRequest('gmap')"title="Payment Method Integration">Google Maps</a></li>
+<li><a href="#tabs-1" onclick="return sendRequest('UserData')"title="Data mining">Data Mining</a></li>
+<li><a href="#tabs-1" onclick="return sendRequest('EditingData')"title="Data Updating">Data Editing</a></li>
+<li><a href="#tabs-1" onclick="return sendRequest('VottingSystem')"title="Collect Public Comments">Rating System</a></li>
+<li><a href="#tabs-1" onclick="return sendRequest('shopcart')"title="website shoping cart">Jq Cart </a></li>
+<li><a href="#tabs-1" onclick="return sendRequest('galary')"title="jquery photo galary">Jq Photo Galary</a></li>
+<li><a href="#tabs-1" onclick="return sendRequest('updb')"title="Upload database file">Upload Excel Database</a></li>
+<li><a href="#"onclick="scrn();">Screen</a></li>
+<li><a href="testpdf.php">Test PDF</a></li>
+<li><a href="http://cooltext.com" target="_blank">Graphics Generator</a></li>
+
+
+</ul>
+</div>
+</div>
+</div>
+</div>
+<button class="btn btn-inverse"><?php include("count.php");?></button>
+<button class="btn btn-inverse"><?php include("visitor.php");?></button>
+<div>
+<button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#demo">
+  Directory Navigation</button>
+<div id="demo" class="collapse">
+<strong>Workflowsys.dx.am</strong>
+<?php $d = dir(getcwd());
+echo  $d->handle . "<br>";
+while (($file = $d->read()) !== false){
+  echo "<a href='$file'>" . $file . "</a><br>";
+}
+$d->close(); ?>
+</div>
+</div>
+<div>
+<button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#demo1">
+  Directory</button>
+<div id="demo1" class="collapse">
+<?php
+$dirs = array_filter(glob("*"), "is_dir");
+sort($dirs);
+foreach($dirs as $x=>$x_value) {
+echo "<a href='index.html?dirs=$x_value'>".$x_value."</a><br>";
+}
+$efle = file_get_contents("adit.php");
+echo "<pre>". $efle. "</pre>";
+echo "<br />";
+echo fileatime("donation.php");
+echo "<br />";
+echo "Last access: ".date("F d Y H:i:s.",fileatime("donation.php"));
+echo "<br />";
+
+$lines = file("http://www.workflowsys.dx.am/adit.php");
+foreach ($lines as $line_num => $line) {
+    echo "Line #<b>{$line_num}</b> : " . htmlspecialchars($line) . "<br />\n";
+}
+
+
+?>
+
+</div>
+</div>
+<div id="browserob" style="margin:8px 8px;"></div>
+</div><!--Left menu End-->
+
+
+
+<div class="span9"id="mainContainer"><!--Body content -->
+<div class="span12">
+<div class="span6"id="rssfeed">
+<form>
+<select onchange="showRSS(this.value)">
+<option value="">Select an RSS-feed:</option>
+<option value="Google">Google News</option>
+<option value="MSNBC">MSNBC News</option>
+</select>
+</form>
+</div>
+<div class="span6"id="gs">
+  <script>
+  (function() {
+    var cx = '009713604930626398310:2ih0e64lerw';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//www.google.com/cse/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<gcse:search></gcse:search>
+</div>
+</div>
+
+<div id="tabs-1"class="span12"style="background:#eee;padding:5px 5px;margin:5px 5px;">
+<?php include("curoser.html");?>
+</div>
+
+<div class="span12">
+<iframe id='output' name='output' src='https://www.odesk.com/o/profiles/users/Skilled-Web-Developer_~01e14f5ebbf4c2423c/' width='100%' frameborder='0' height='400'>
+</iframe>
+<dl>
+<dt class="page-header"><h1>SERVICES</h1></dt>
+<dd><h2>-Building Database Website</h2></dd>
+<dd><h2>-CMS Customization</h2></dd>
+<dd><h2>API Integration and Programming</h2></dd>
+</dl>
+<dl>
+<hr />
+<dt class="page-header"><h1>Varified Developer </h1></dt>
+<dd><h2>-Google Walet</h2></dd>
+<dd><h2>-Authorize.net</h2></dd>
+<dd><h2>-PayPal.com</h2></dd>
+</dl>
+<hr />
+<dl>
+<dt class="page-header"><h1>Academic Background</h1></dt>
+<dd><h2>- School Certificate Exam 2002.</h2></dd>
+<dd><h2>- Diploma-in-Computer Science- 2003.</h2></dd>
+<dd><h2>- Business Management- 2006.</h2></dd>
+<dd><h2>- Bacholor-in-Social-Science- 2014 </h2> expected</dd>
+</dl> 
+
+<pre class="embedcurl" title="a developer workflow site.">curl workflowsys.dx.am</pre>
+<!-- You only need to reference this script once per page. -->
+<script src="https://www.embedcurl.com/embedcurl.min.js" async></script>
+</div>
+<hr />
+<div class="span12">
+<dl>
+<dt class="page-header"><h1>Organizational Background</h1></dt>
+<dd><h2>2009 - 2013 with <a href="http://lambproject.org">LAMB</a> <small style="color:#fff;">A Health Development Organization</small></h2></dd>
+
+</dl> 
+</div>
+
+
+
+
+
+
+
+
+
+<div class="span12" id="usnap"><script>
+   var _usersnapconfig = {
+       apiKey: "74cbc2f2-10d1-46db-b031-cd393b047e7d",
+       valign: "bottom",
+       halign: "right",
+       tools: ["pen", "highlight", "note"],
+       lang: "en",
+       commentBox: true,
+       emailBox: true
+   }; 
+   (function() {
+       var s = document.createElement("script");
+       s.type = "text/javascript";
+       s.async = true;
+       s.src = "//api.usersnap.com/usersnap.js";
+       var x = document.getElementsByTagName("head")[0];
+       x.appendChild(s);
+   })();
+</script></div>
+</div>
+</div>
+</div><!--body content end-->
+</div>
+</div>
+
+<div class="modal hide fade"style="
+position:absolute;">
+<div class="modal-header"style="background:#ddd;">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	<table><tr><td>
+    <h3>Job Order</h3>
+	<p style="font-size:8pt;line-height:1;">
+	moksedbd<img src="bn.gif" /><br />web developer & designer<br />Dinajpur,Bangladesh<br />Phone: 08801743278734<br />Email: mksdbd4@gmail.com<br />
+	</p></td>
+	<td width="100"></td>
+	<td>
+<h3>moksedBD, Inc.</h3>
+<address style="font-size:8pt;line-height:1;">
+Chotto horipur, Parbatipur<br>
+Dinajpur-5250, Bangladesh<br>
+<abbr title="Phone">P:</abbr> (088) 01743278734
+</address></td>
+</tr></table>
+</div>	
+  
+<div class="modal-body">
+<mark>This information and order must be rule out. I will respond within 48 hours.</mark>   
+<?php include("joborderform.php");?>
+</div>
+    <div class="modal-footer">
+    <a href="#" data-dismiss="modal" class="btn">Cancel</a>
+	<a href="#" onclick="printpage();"class="btn">Print</a>
+    <a href="#"onclick="smitjoborder();" class="btn btn-primary">Order</a>
+    </div>
+    </div>
+
+<div id="footer"style="text-align:center;">
+
+<code style="background:transparent;color:#B8860B;">&copy; moksedbd 2009-2014<br />All rights reserved.</code>
+</div>
+</body>
+</html>
